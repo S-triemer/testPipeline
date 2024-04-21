@@ -19,15 +19,20 @@ jobs:
           node-version: "20"
 
       - name: Login to Docker Registry
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} my.registry.com
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} ghcr.io
 
-      - name: Pull Docker Image
-        run: docker pull my.registry.com/my-image:latest
-
-      - name: Stop and Remove Existing Container
+      - name: Build and Push docker image
         run: |
-          docker stop my_container || true
-          docker rm my_container || true
-
-      - name: Run New Container
-        run: docker run -d --name my_container -p 8080:80 my.registry.com/my-image:latest
+          docker build -t ghcr.io/my-image:latest .
+          docker push my.registry.com/my-image:latest
+      - name: SSH into Portainer Host
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PORTAINER_HOST }}
+          username: ${{ secrets.PORTAINER_USERNAME }}
+          password: ${{ secrets.PORTAINER_PASSWORD }}
+          script: |
+            docker pull my.registry.com/my-image:latest
+            docker stop my_container || true
+            docker rm my_container || true
+            docker run -d --name my_container -p 8080:80 my.registry.com/my-image:latest

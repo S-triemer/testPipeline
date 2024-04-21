@@ -23,8 +23,8 @@ jobs:
 
       - name: Build and Push docker image
         run: |
-          docker build -t ghcr.io/my-image:latest .
-          docker push ghcr.io/my-image:latest
+          docker build -t ghcr.io/s-triemer/my-image:latest .
+          docker push ghcr.io/s-triemer/my-image:latest
       - name: SSH into Portainer Host
         uses: appleboy/ssh-action@master
         with:
@@ -32,7 +32,7 @@ jobs:
           username: ${{ secrets.PORTAINER_USERNAME }}
           password: ${{ secrets.PORTAINER_PASSWORD }}
           script: |
-            docker pull ghcr.io/my-image:latest
+            docker pull ghcr.io/s-triemer/my-image:latest
             docker stop my_container || true
             docker rm my_container || true
-            docker run -d --name my_container -p 8080:80 ghcr.io/my-image:latest
+            docker run -d --name my_container -p 8080:80 ghcr.io/s-triemer/my-image:latest

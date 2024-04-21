@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout Repository
@@ -25,17 +25,12 @@ jobs:
         run: |
           docker build -t ghcr.io/s-triemer/my-image:latest .
           docker push ghcr.io/s-triemer/my-image:latest
-      - name: SSH into Portainer Host
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.PORTAINER_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          script: |
-            ssh -N -L 9000:localhost:9000 -o StrictHostKeyChecking=no -i <(echo "${{ secrets.SSH_KEY }}") ${{ secrets.SSH_USERNAME }}@${{ secrets.PORTAINER_HOST }} &
-            sleep 5
-            docker pull ghcr.io/s-triemer/my-image:latest
-            docker stop my_container || true
-            docker rm my_container || true
-            docker run -d --name my_container -p 8080:80 ghcr.io/s-triemer/my-image:latest
+      - name: Log in to Portainer
+        run: docker login -u ${{ secrets.PORTAINER_USERNAME }}  -p ${{ secrets.DOCKER_PASSWORD }}  localhost:9000
+
+      - name: Pull and Rebuild container in Portainer
+        run: |
+          docker pull ghcr.io/s-triemer/my-image:latest
+          docker stop CONTAINER_NAME
+          docker rm CONTAINER_NAME
+          docker run -d --name CONTAINER_NAME -p 80:80 ghcr.io/s-triemer/my-image:latest

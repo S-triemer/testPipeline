@@ -32,7 +32,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
-        script: |
+        run: |
           ssh -N -L 9000:localhost:9000 -o StrictHostKeyChecking=no -i <(echo "${{ secrets.SSH_KEY }}") ${{ secrets.SSH_USERNAME }}@${{ secrets.PORTAINER_HOST }} &
           sleep 5
           docker pull ghcr.io/s-triemer/my-image:latest

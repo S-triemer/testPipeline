@@ -33,9 +33,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
-          ssh -N -L 9000:localhost:9000 -o StrictHostKeyChecking=no -i <(echo "${{ secrets.SSH_KEY }}") ${{ secrets.SSH_USERNAME }}@${{ secrets.PORTAINER_HOST }} &
-          sleep 5
-          docker pull ghcr.io/s-triemer/my-image:latest
-          docker stop my_container || true
-          docker rm my_container || true
-          docker run -d --name my_container -p 8080:80 ghcr.io/s-triemer/my-image:latest
+            ssh -N -L 9000:localhost:9000 -o StrictHostKeyChecking=no -i <(echo "${{ secrets.SSH_KEY }}") ${{ secrets.SSH_USERNAME }}@${{ secrets.PORTAINER_HOST }} &
+            sleep 5
+            docker pull ghcr.io/s-triemer/my-image:latest
+            docker stop my_container || true
+            docker rm my_container || true
+            docker run -d --name my_container -p 8080:80 ghcr.io/s-triemer/my-image:latest

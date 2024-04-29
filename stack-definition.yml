@@ -1,0 +1,8 @@
+version: "3.7"
+services:
+  web:
+    image: my-image:latest ghcr.io/s-triemer/my-image:latest
+    ports:
+      - "80:80"
+    volumes:
+      - /usr/src/app:/usr/src/app

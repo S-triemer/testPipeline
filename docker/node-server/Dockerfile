@@ -3,7 +3,7 @@ FROM node:20
 WORKDIR /usr/src/app
 
 # Kopiere die Abhängigkeiten und den Code in das Arbeitsverzeichnis
-COPY ../../package*.json ./
+COPY ../../packae*.json ./
 COPY ../../server.js ./
 
 # Installiere die Abhängigkeiten

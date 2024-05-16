@@ -1,8 +1,7 @@
 version: "3"
 services:
   web:
-    image:
-      - ghcr.io/s-triemer/my-image:latest
+    image: ghcr.io/s-triemer/my-image:latest
     ports:
       - "80:80"
     volumes:

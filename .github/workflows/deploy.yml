@@ -23,16 +23,5 @@ jobs:
 
       - name: Build and Push docker image
         run: |
-          docker build -t ghcr.io/s-triemer/my-image:latest .
+          docker build -t ghcr.io/s-triemer/my-image:latest docker/node-server
           docker push ghcr.io/s-triemer/my-image:latest
-
-      - name: Deploy stack to Portainer
-        uses: carlrygart/portainer-stack-deploy@v1
-        with:
-          portainer-host: ${{ secrets.PORTAINER_HOST }}
-          username: ${{ secrets.PORTAINER_USERNAME }}
-          password: ${{ secrets.PORTAINER_PASSWORD }}
-          stack-name: "my-test-pipeline"
-          stack-definition: "stack-definition.yml"
-          template-variables: '{"username": "s-triemer"}'
-          image: my-image:latest
